@@ -1,9 +1,10 @@
-import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import colors from '../utils/colors';
 
 const Task = ({ task }) => {
   return (
-    <View style={styles.taskItem}>
+    <View style={styles.taskContainer}>
       <Text>{task.name}</Text>
     </View>
   );

@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import colors from '../utils/colors';
 import { getTasks, removeTask, addTask } from '../utils/storage';
-import { AddTaskModal, ListItemRightActionButton, Task, AppIcon } from '../components';
+import { AddTaskModal, ListItemRightActionButton, Task, AppIcon } from '../components'
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 const Home = () => {
 
   const [tasks, setTasks] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [currentTask, setCurrentTask] = useState('');
 
   useEffect(() => {
     loadTasks();
   }, [])
 
-  const loadTasks = async () => {
+  loadTasks = async () => {
     const tasks = await getTasks();
     setTasks(tasks);
   }
 
-  const markTaskDone = async (data, rowMap) => {
-    const { index } = data;
-    const { tasks: existingTasks } = this.state;
-    const resp = await removeTask(index, existingTasks);
+  addTaskInStorage = async (newTask) => {
+    if (newTask === '') return;
+    const response = await addTask(newTask, tasks);
+    setTasks(response);
+  }
+
+  markTaskDone = async (data, rowMap) => {
+    const { index, item } = data;
+    const resp = await removeTask(item, tasks);
     if (rowMap[index]) {
       rowMap[index].closeRow();
     }
@@ -40,18 +44,18 @@ const Home = () => {
         previewRowKey={'0'}
         previewDuration={300}
         data={tasks}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <Task task={item} />}
         renderHiddenItem={(data, rowMap) => (
           <View style={styles.rowBackSide}>
             <View />
-            <ListItemRightActionButton onPress={() => markTaskDone(data, rowMap)} />
+            <ListItemRightActionButton name='done' color='white' onPress={() => markTaskDone(data, rowMap)} />
           </View>
         )}
         ItemSeparatorComponent={() => <View style={{ height: StyleSheet.hairlineWidth, backgroundColor: colors.DIVIDER }} />}
       />
       <AppIcon raised name='plus' size={55} style={styles.plusButton} onPress={() => setModalVisible(true)} />
-      <AddTaskModal isVisible={isModalVisible} task={currentTask} />
+      <AddTaskModal hideModal={() => setModalVisible(false)} isVisible={isModalVisible} addTask={addTaskInStorage} />
     </View>
   );
 }
@@ -59,7 +63,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.WHITE
+    // backgroundColor: colors.WHITE
   },
   rowBackSide: {
     flex: 1,
@@ -67,12 +71,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.GREEN,
-  },
-  doneButton: {
-    width: 60,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   plusButton: {
     position: 'absolute',

@@ -3,13 +3,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 // Helper functions //
 
 function getTaskId() {
-  return Math.floor(Math.random() * (90000 - 1 + 1) ) + 1;
+  return Math.floor(Math.random() * (90000 - 1 + 1)) + 1;
 }
 
 export const set = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
-  } catch(e) {
+  } catch (e) {
     alert('Unable to store value in storage: ', key);
     console.log(e);
   }
@@ -19,7 +19,7 @@ export const get = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
     return JSON.parse(value);
-  } catch(e) {
+  } catch (e) {
     alert('Unable to get value from storage: ', key);
     console.log(e);
   }
@@ -34,17 +34,17 @@ export const addTask = async (newTask, existingTasks) => {
     existingTasks.push(taskObj);
     await AsyncStorage.setItem('tasks', JSON.stringify(existingTasks));
     return existingTasks;
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     alert('There was some error in adding task');
   }
 }
 
-export const removeTask = async (index, existingTasks) => {
+export const removeTask = async (task, existingTasks) => {
   try {
-    existingTasks.splice(index, 1);
-    await AsyncStorage.setItem('tasks', JSON.stringify(existingTasks));
-    return existingTasks;
+    const newMessages = existingTasks.filter(m => m.id !== task.id);
+    await AsyncStorage.setItem('tasks', JSON.stringify(newMessages));
+    return newMessages;
   } catch (e) {
     console.log(e);
     alert('There was some error in marking task as complete');

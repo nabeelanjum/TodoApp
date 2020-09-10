@@ -2,7 +2,7 @@ export default colors = {
   WHITE: '#fff',
   BLACK: '#000',
   BACKGROUND: '#fff',
-  DIVIDER: 'rgb(180, 180, 180)',
+  DIVIDER: 'rgb(200, 200, 200)',
   THEME: 'tomato',
   GREEN: 'green',
 }

@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Modal, TextInput, Text, StyleSheet } from 'react-native';
 import colors from '../utils/colors';
+// import useAddTask from '../hooks/useAddTask';
 
-const AddTaskModal = ({ isVisible, task }) => {
+const AddTaskModal = ({ isVisible, hideModal, addTask }) => {
+
+  const [newTask, setTask] = useState('');
+
+  const addNewTask = () => {
+    addTask(newTask);
+    setTask('');
+    hideModal();
+  }
+
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View style={styles.modalContainer}>
-        <TouchableOpacity onPress={this.hideModal} style={{ flex: .4 }} />
+        <TouchableOpacity onPress={hideModal} style={{ flex: .4 }} />
         <View style={styles.addTaskView}>
-          <TextInput value={task} autoFocus={true} placeholder='Add New Task' returnKeyType='done' style={styles.addInputField} onChangeText={(t) => this.setState({ task: t })} />
-          <TouchableOpacity style={styles.addBtn} onPress={this.addTask}>
+          <TextInput value={newTask} autoFocus={true} placeholder='Add New Task' returnKeyType='done' style={styles.addInputField} onChangeText={(t) => setTask(t)} />
+          <TouchableOpacity style={styles.addBtn} onPress={addNewTask}>
             <Text style={{ color: 'white' }}>Add</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={this.hideModal} style={{ flex: .6 }} />
+        <TouchableOpacity onPress={hideModal} style={{ flex: .6 }} />
       </View>
     </Modal>
   );
