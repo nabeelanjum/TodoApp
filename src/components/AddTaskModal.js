@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Modal, TextInput, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Modal, TextInput, StyleSheet } from 'react-native';
+import { Text } from '../components';
 import colors from '../utils/colors';
-// import useAddTask from '../hooks/useAddTask';
+import { normalizeX, normalizeY } from '../utils/functions';
 
 const AddTaskModal = ({ isVisible, hideModal, addTask }) => {
 
@@ -37,8 +38,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   addTaskView: {
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    paddingVertical: normalizeY(15),
+    paddingHorizontal: normalizeX(12),
     borderRadius: 8,
     backgroundColor: colors.BACKGROUND,
   },
@@ -48,8 +49,8 @@ const styles = StyleSheet.create({
     minHeight: 36,
   },
   addBtn: {
-    height: 40,
-    width: 120,
+    height: normalizeY(35),
+    width: normalizeX(120),
     borderRadius: 8,
     marginTop: 10,
     backgroundColor: colors.GREEN,

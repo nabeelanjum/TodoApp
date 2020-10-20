@@ -1,4 +1,5 @@
 export default colors = {
+  TEXT: 'black',
   WHITE: '#fff',
   BLACK: '#000',
   BACKGROUND: '#fff',
